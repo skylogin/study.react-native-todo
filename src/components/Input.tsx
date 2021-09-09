@@ -20,10 +20,16 @@ const StyledInput = styled.TextInput.attrs(() => ({
 
 export type Props = {
   placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  onSubmitEditing: () => void;
 };
 
 const Input: React.FC<Props> = ({
-  placeholder
+  placeholder,
+  value,
+  onChangeText,
+  onSubmitEditing,
 }) => {
   const width = Dimensions.get('window').width;
 
@@ -36,6 +42,9 @@ const Input: React.FC<Props> = ({
       autoCorrect={false}
       returnKeyType="done"
       keyboardAppearance="dark"
+      value={value}
+      onChangeText={onChangeText}
+      onSubmitEditing={onSubmitEditing}
     />
   );
 };

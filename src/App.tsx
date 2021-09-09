@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 
@@ -25,12 +25,28 @@ const Title = styled.Text`
 
 
 const App: React.FC = () => {
+  const [newTask, setNewTask] = useState('');
+
+  const _addTask = () => {
+    alert(`Add: ${newTask}`);
+    setNewTask('');
+  }
+
+  const _handleTextChange = (text: string) => {
+    setNewTask(text);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <StatusBar barStyle="light-content" backgroundColor={theme.background} />
         <Title>Todo List</Title>
-        <Input placeholder="+ Add a Task" />
+        <Input 
+          placeholder="+ Add a Task" 
+          value={newTask}
+          onChangeText={_handleTextChange}
+          onSubmitEditing={_addTask}
+        />
       </Container>
     </ThemeProvider>
   );
