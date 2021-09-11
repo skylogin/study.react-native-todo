@@ -21,6 +21,7 @@ export type IProps = {
   placeholder?: string;
   value: string;
   autoFocus?: boolean;
+  onBlur?: () => void;
   onChangeText: (text: string) => void;
   onSubmitEditing: () => void;
 };
@@ -29,6 +30,7 @@ const Input: React.FC<IProps> = ({
   placeholder,
   value,
   autoFocus,
+  onBlur,
   onChangeText,
   onSubmitEditing,
 }) => {
@@ -38,6 +40,7 @@ const Input: React.FC<IProps> = ({
     <StyledInput
       width={width} 
       autoFocus={autoFocus}
+      onBlur={onBlur}
       placeholder={placeholder} 
       maxLength={50} 
       autoCapitalize="none"

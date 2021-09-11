@@ -80,6 +80,10 @@ const App: React.FC = () => {
     setNewTask(text);
   }
 
+  const _onBlur = () => {
+    setNewTask('');
+  }
+
   const width = Dimensions.get('window').width;
 
   return (
@@ -90,6 +94,7 @@ const App: React.FC = () => {
         <Input 
           placeholder="+ Add a Task" 
           value={newTask}
+          onBlur={_onBlur}
           onChangeText={_handleTextChange}
           onSubmitEditing={_addTask}
         />

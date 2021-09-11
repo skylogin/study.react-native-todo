@@ -54,11 +54,19 @@ const Task: React.FC<IProps> = ({
     }
   }
 
+  const _onBlur = () => {
+    if(isEditing){
+      setIsEditing(false);
+      setText(item.text);
+    }
+  }
+
   return (
     isEditing ? (
       <Input
         value={text}
         autoFocus={true}
+        onBlur={_onBlur}
         onChangeText={text => setText(text)}
         onSubmitEditing={_onSubmitEditing}
       />
