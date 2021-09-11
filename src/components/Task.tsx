@@ -25,7 +25,7 @@ const Contents = styled.Text<{ completed: boolean }>`
 `;
 
 interface IProps{
-  item: {id: string, text: string, completed: boolean};
+  item: TaskProps;
   deleteTask: (id: string) => void;
   toggleTask: (id: string) => void;
   updateTask: (task: TaskProps) => void;

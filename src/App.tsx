@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { StatusBar, Dimensions } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import AppLoading from 'expo-app-loading';
 
 import { theme } from './theme';
 
@@ -39,13 +41,23 @@ interface ITask {
 
 
 const App: React.FC = () => {
+  const [isReady, setIsReady] = useState(false);
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState({
-    '1': { id: '1', text: 'RN Todo', completed: false },
-    '2': { id: '2', text: 'Design Layout', completed: true },
-    '3': { id: '3', text: 'Add TODO item', completed: false },
-    '4': { id: '4', text: 'Edit TODO item', completed: false },
-  });
+  const [tasks, setTasks] = useState({});
+
+  const _saveTasks = async (tasks: ITask) => {
+    try {
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+      setTasks(tasks);
+    } catch(e){
+      console.error(e);
+    }
+  };
+
+  const _loadTasks = async () => {
+    const loadedTasks = await AsyncStorage.getItem('tasks');
+    setTasks(JSON.parse(loadedTasks || '{}'));
+  };
 
   const _addTask = () => {
     const ID = Date.now().toString();
@@ -53,25 +65,25 @@ const App: React.FC = () => {
       [ID]: { id: ID, text: newTask, completed: false },
     };
     setNewTask('');
-    setTasks({ ...tasks, ...newTaskObject });
+    _saveTasks({ ...tasks, ...newTaskObject });
   }
 
   const _deleteTask = (id: string) => {
     const currentTasks: any = Object.assign({}, tasks);
     delete currentTasks[id];
-    setTasks(currentTasks);
+    _saveTasks(currentTasks);
   }
 
   const _toggleTask = (id: string) => {
     const currentTasks: any = Object.assign({}, tasks);
     currentTasks[id]['completed'] = !currentTasks[id]['completed'];
-    setTasks(currentTasks);
+    _saveTasks(currentTasks);
   }
 
   const _updateTask = (item: TaskProps) => {
     const currentTasks: any = Object.assign({}, tasks);
     currentTasks[item.id] = item;
-    setTasks(currentTasks);
+    _saveTasks(currentTasks);
   }
 
   const _handleTextChange = (text: string) => {
@@ -85,32 +97,43 @@ const App: React.FC = () => {
   const width = Dimensions.get('window').width;
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
-        <StatusBar barStyle="light-content" backgroundColor={theme.background} />
-        <Title>Todo List</Title>
-        <Input 
-          placeholder="+ Add a Task" 
-          value={newTask}
-          onBlur={_onBlur}
-          onChangeText={_handleTextChange}
-          onSubmitEditing={_addTask}
-        />
-        <List width={width}>
-          {Object.values(tasks)
-            .reverse()
-            .map(item => (
-              <Task 
-                key={item.id} 
-                item={item} 
-                deleteTask={_deleteTask}
-                toggleTask={_toggleTask}
-                updateTask={_updateTask}
-              />
-            ))}
-        </List>
-      </Container>
-    </ThemeProvider>
+    isReady? (
+      <ThemeProvider theme={theme}>
+        <Container>
+          <StatusBar barStyle="light-content" backgroundColor={theme.background} />
+          <Title>Todo List</Title>
+          <Input 
+            placeholder="+ Add a Task" 
+            value={newTask}
+            onBlur={_onBlur}
+            onChangeText={_handleTextChange}
+            onSubmitEditing={_addTask}
+          />
+          <List width={width}>
+            {Object.values(tasks)
+              .reverse()
+              //TODO: any타입을 변경할 것 (asyncStorage넣고 타입지정을 해야만 했음)
+              .map((item:any) => {
+                return (
+                  <Task 
+                    key={item.id} 
+                    item={item} 
+                    deleteTask={_deleteTask}
+                    toggleTask={_toggleTask}
+                    updateTask={_updateTask}
+                  />
+                );  
+              })}
+          </List>
+        </Container>
+      </ThemeProvider>
+    ) : (
+      <AppLoading
+        startAsync={_loadTasks}
+        onFinish={() => setIsReady(true)}
+        onError={console.error}
+      />
+    )
   );
 }
 
