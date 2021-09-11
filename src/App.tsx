@@ -29,10 +29,16 @@ const List = styled.ScrollView<{ width: number }>`
   width: ${({ width }) => width - 40}px;
 `;
 
+// task에 대한 타입을 지정하였으나 hooks와 충돌이 일어남
+// TODO: 이후 useState와 충돌되지 않도로 수정해 볼것
+interface TaskProps {
+  id: string, 
+  text: string, 
+  completed: boolean
+};
 
-interface ITask{
-
-
+interface ITask {
+  [id: string]: TaskProps
 }
 
 
@@ -55,7 +61,6 @@ const App: React.FC = () => {
   }
 
   const _deleteTask = (id: string) => {
-    //TODO: any타입으로 받은 것에 대해 타입지정
     const currentTasks: any = Object.assign({}, tasks);
     delete currentTasks[id];
     setTasks(currentTasks);
