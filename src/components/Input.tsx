@@ -2,30 +2,29 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
-import { theme } from '../theme';
 
-const StyledInput = styled.TextInput.attrs(() => ({
-  placeholderTextColor: theme.main
+const StyledInput = styled.TextInput.attrs((props) => ({
+  placeholderTextColor: props.theme.main
 }))<{ width: number }>`
   width: ${(props) => props.width - 40}px;
   height: 60px;
   margin: 3px 0;
   padding: 15px 20px;
   border-radius: 10px;
-  background-color: ${(props) => theme.itemBackground};
+  background-color: ${(props) => props.theme.itemBackground};
   font-size: 25px;
-  color: ${(props) => theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 
-export type Props = {
+export type IProps = {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
   onSubmitEditing: () => void;
 };
 
-const Input: React.FC<Props> = ({
+const Input: React.FC<IProps> = ({
   placeholder,
   value,
   onChangeText,

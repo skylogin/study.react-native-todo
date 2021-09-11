@@ -1,6 +1,6 @@
-import { ITheme } from "./theme.d";
+import { DefaultTheme } from "styled-components/native";
 
-export const theme: ITheme = {
+export const theme: DefaultTheme = {
   background: "#101010",
   itemBackground: "#313131",
   main: "#778bdd",

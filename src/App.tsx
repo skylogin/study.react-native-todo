@@ -8,7 +8,7 @@ import Input from './components/Input';
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: ${(props) => theme.background};
+  background-color: ${(props) => props.theme.background};
   align-items: center;
   justify-content: flex-start;
 `;
