@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components/native';
 import { images } from '../images';
 import IconButton from './IconButton';
+import Input from './Input';
+
+import type { TaskProps } from '../types/task';
+
+
 
 const Container = styled.View`
   flex-direction: row;
@@ -23,32 +28,60 @@ interface IProps{
   item: {id: string, text: string, completed: boolean};
   deleteTask: (id: string) => void;
   toggleTask: (id: string) => void;
+  updateTask: (task: TaskProps) => void;
 };
 
 const Task: React.FC<IProps> = ({
   item,
   deleteTask,
   toggleTask,
+  updateTask,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState(item.text);
+  const ref_input = useRef(null);
+
+
+  const _handleUpdateButtonPress = () => {
+    setIsEditing(true);
+  };
+  
+  const _onSubmitEditing = () => {
+    if(isEditing){
+      const editedTask = Object.assign({}, item, { text });
+      setIsEditing(false);
+      updateTask(editedTask);
+    }
+  }
+
   return (
-    <Container>
-      <IconButton 
-        type={item.completed? images.completed: images.uncompleted} 
-        id={item.id} 
-        onPressOut={toggleTask} 
-        completed={item.completed}
+    isEditing ? (
+      <Input
+        value={text}
+        autoFocus={true}
+        onChangeText={text => setText(text)}
+        onSubmitEditing={_onSubmitEditing}
       />
-      <Contents completed={item.completed}>
-        {item.text}
-      </Contents>
-      {item.completed || <IconButton type={images.update} id={item.id} />}
-      <IconButton 
-        type={images.delete} 
-        id={item.id} 
-        onPressOut={deleteTask} 
-        completed={item.completed}
-      />
-    </Container>
+    ) : (
+      <Container>
+        <IconButton 
+          type={item.completed? images.completed: images.uncompleted} 
+          id={item.id} 
+          onPressOut={toggleTask} 
+          completed={item.completed}
+        />
+        <Contents completed={item.completed}>
+          {item.text}
+        </Contents>
+        {item.completed || <IconButton type={images.update} id={item.id} onPressOut={_handleUpdateButtonPress} />}
+        <IconButton 
+          type={images.delete} 
+          id={item.id} 
+          onPressOut={deleteTask} 
+          completed={item.completed}
+        />
+      </Container>
+    )
   )
 };
 

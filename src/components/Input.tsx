@@ -18,8 +18,9 @@ const StyledInput = styled.TextInput.attrs(({ theme }) => ({
 
 
 export type IProps = {
-  placeholder: string;
+  placeholder?: string;
   value: string;
+  autoFocus?: boolean;
   onChangeText: (text: string) => void;
   onSubmitEditing: () => void;
 };
@@ -27,14 +28,16 @@ export type IProps = {
 const Input: React.FC<IProps> = ({
   placeholder,
   value,
+  autoFocus,
   onChangeText,
   onSubmitEditing,
 }) => {
   const width = Dimensions.get('window').width;
 
   return (
-    <StyledInput 
+    <StyledInput
       width={width} 
+      autoFocus={autoFocus}
       placeholder={placeholder} 
       maxLength={50} 
       autoCapitalize="none"

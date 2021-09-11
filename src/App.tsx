@@ -9,6 +9,10 @@ import Input from './components/Input';
 import IconButton from './components/IconButton';
 import Task from './components/Task';
 
+import type { TaskProps } from './types/task';
+
+
+
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${(props) => props.theme.background};
@@ -31,12 +35,6 @@ const List = styled.ScrollView<{ width: number }>`
 
 // task에 대한 타입을 지정하였으나 hooks와 충돌이 일어남
 // TODO: 이후 useState와 충돌되지 않도로 수정해 볼것
-interface TaskProps {
-  id: string, 
-  text: string, 
-  completed: boolean
-};
-
 interface ITask {
   [id: string]: TaskProps
 }
@@ -72,6 +70,12 @@ const App: React.FC = () => {
     setTasks(currentTasks);
   }
 
+  const _updateTask = (item: TaskProps) => {
+    const currentTasks: any = Object.assign({}, tasks);
+    currentTasks[item.id] = item;
+    setTasks(currentTasks);
+  }
+
   const _handleTextChange = (text: string) => {
     setNewTask(text);
   }
@@ -98,6 +102,7 @@ const App: React.FC = () => {
                 item={item} 
                 deleteTask={_deleteTask}
                 toggleTask={_toggleTask}
+                updateTask={_updateTask}
               />
             ))}
         </List>
