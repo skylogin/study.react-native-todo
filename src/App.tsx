@@ -3,10 +3,8 @@ import { StatusBar, Dimensions } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 
 import { theme } from './theme';
-import { images } from './images';
 
 import Input from './components/Input';
-import IconButton from './components/IconButton';
 import Task from './components/Task';
 
 import type { TaskProps } from './types/task';
