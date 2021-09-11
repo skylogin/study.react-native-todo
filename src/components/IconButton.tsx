@@ -1,10 +1,9 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-import { images } from '../images';
 
 const Icon = styled.Image<{source: string}>`
-  tint-color: ${(props) => props.theme.main};
+  tint-color: ${({ theme }) => theme.main};
   width: 30px;
   height: 30px;
   margin: 10px;
@@ -12,7 +11,7 @@ const Icon = styled.Image<{source: string}>`
 
 interface IProps{
   type: string;
-  onPressOut: () => void;
+  onPressOut?: () => void;
 }
 
 const IconButton: React.FC<IProps> = ({

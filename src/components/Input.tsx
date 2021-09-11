@@ -3,17 +3,17 @@ import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
 
-const StyledInput = styled.TextInput.attrs((props) => ({
-  placeholderTextColor: props.theme.main
+const StyledInput = styled.TextInput.attrs(({ theme }) => ({
+  placeholderTextColor: theme.main
 }))<{ width: number }>`
   width: ${(props) => props.width - 40}px;
   height: 60px;
   margin: 3px 0;
   padding: 15px 20px;
   border-radius: 10px;
-  background-color: ${(props) => props.theme.itemBackground};
+  background-color: ${({ theme }) => theme.itemBackground};
   font-size: 25px;
-  color: ${(props) => props.theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 
