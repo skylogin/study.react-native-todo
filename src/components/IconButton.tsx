@@ -11,18 +11,31 @@ const Icon = styled.Image<{source: string}>`
 
 interface IProps{
   type: string;
-  onPressOut?: () => void;
+  id: string;
+  onPressOut?: (id: string) => void;
 }
+
+
 
 const IconButton: React.FC<IProps> = ({
   type,
-  onPressOut,
+  id,
+  onPressOut = Function,
 }) => {
+
+  const _onPressOut = () =>  {
+    onPressOut(id);
+  }
+
+
   return (
-    <TouchableOpacity onPressOut={onPressOut}>
+    <TouchableOpacity onPressOut={_onPressOut}>
       <Icon source={type} />
     </TouchableOpacity>
   );
 };
+
+
+
 
 export default IconButton;

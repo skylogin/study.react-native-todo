@@ -50,6 +50,13 @@ const App: React.FC = () => {
     setTasks({ ...tasks, ...newTaskObject });
   }
 
+  const _deleteTask = (id: string) => {
+    //TODO: any타입으로 받은 것에 대해 타입지정
+    const currentTasks: any = Object.assign({}, tasks);
+    delete currentTasks[id];
+    setTasks(currentTasks);
+  }
+
   const _handleTextChange = (text: string) => {
     setNewTask(text);
   }
@@ -71,7 +78,7 @@ const App: React.FC = () => {
           {Object.values(tasks)
             .reverse()
             .map(item => (
-              <Task key={item.id} text={item.text} />
+              <Task key={item.id} item={item} deleteTask={_deleteTask} />
             ))}
         </List>
       </Container>

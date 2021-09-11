@@ -19,20 +19,22 @@ const Contents = styled.Text`
 `;
 
 interface IProps{
-  text: string;
+  item: {id: string, text: string, completed: boolean};
+  deleteTask: (id: string) => void;
 };
 
 const Task: React.FC<IProps> = ({
-  text,
+  item,
+  deleteTask,
 }) => {
   return (
     <Container>
-      <IconButton type={images.uncompleted} />
+      <IconButton type={images.uncompleted} id={item.id} />
       <Contents>
-        {text}
+        {item.text}
       </Contents>
-      <IconButton type={images.update} />
-      <IconButton type={images.delete} />
+      <IconButton type={images.update} id={item.id} />
+      <IconButton type={images.delete} id={item.id} onPressOut={deleteTask} />
     </Container>
   )
 };
